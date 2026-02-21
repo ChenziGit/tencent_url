@@ -8,7 +8,7 @@ import base64
 
 app = Flask(__name__)
 
-cookie_str = 'qqmusic_key=Q_H_L_63k3NO_EPtavw7lFRp8jTnzq43D9kLPyxHG3Hb9ZU-dwyS4iuWDSuGH2cHqlXT6ra7QjEjDaYLiOzVFMmn_MdkybI; qm_keyst=Q_H_L_63k3NO_EPtavw7lFRp8jTnzq43D9kLPyxHG3Hb9ZU-dwyS4iuWDSuGH2cHqlXT6ra7QjEjDaYLiOzVFMmn_MdkybI; psrf_access_token_expiresAt=1776871110; psrf_qqunionid=59365D53C5B032BC74657551FF41D2F2; euin=7io5oiokoKEs; wxunionid=; uin=731335196; psrf_qqopenid=FD5D1EC2DFD8B13C92264A8EE5BDE56A'
+cookie_str = ' qm_keyst=Q_H_L_63k3NO_EPtavw7lFRp8jTnzq46ra7QjEjDaYLiOzVFMmn_MdkybI; psrf_access_token_expiresAt=1776871110;'
 
 class QQMusic:
     def __init__(self):
