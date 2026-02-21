@@ -8,7 +8,7 @@ import base64
 
 app = Flask(__name__)
 
-cookie_str = ''
+cookie_str = 'qqmusic_key=Q_H_L_63k3NO_EPtavw7lFRp8jTnzq43D9kLPyxHG3Hb9ZU-dwyS4iuWDSuGH2cHqlXT6ra7QjEjDaYLiOzVFMmn_MdkybI; qm_keyst=Q_H_L_63k3NO_EPtavw7lFRp8jTnzq43D9kLPyxHG3Hb9ZU-dwyS4iuWDSuGH2cHqlXT6ra7QjEjDaYLiOzVFMmn_MdkybI; psrf_access_token_expiresAt=1776871110; psrf_qqunionid=59365D53C5B032BC74657551FF41D2F2; euin=7io5oiokoKEs; wxunionid=; uin=731335196; psrf_qqopenid=FD5D1EC2DFD8B13C92264A8EE5BDE56A'
 
 class QQMusic:
     def __init__(self):
@@ -17,7 +17,8 @@ class QQMusic:
         self.uin = '0'
         self.cookies = {}
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+            'Referer': 'https://y.qq.com/'
         }
         self._headers = {
             'Accept': '*/*',
@@ -54,9 +55,11 @@ class QQMusic:
 
     def set_cookies(self, cookie_str):
         cookies = {}
-        for cookie in cookie_str.split('; '):
-            key, value = cookie.split('=', 1)
-            cookies[key] = value
+        if cookie_str:
+            for cookie in cookie_str.split('; '):
+                if '=' in cookie:
+                    key, value = cookie.split('=', 1)
+                    cookies[key] = value
         self.cookies = cookies
 
     def ids(self, url):
@@ -135,47 +138,48 @@ class QQMusic:
         """
         获取歌曲信息
         """
+        payload = {
+            "comm": {
+                "ct": 24,
+                "cv": 0
+            },
+            "songinfo": {
+                "method": "get_song_detail_yqq",
+                "module": "music.pf_song_detail_svr",
+                "param": {
+                    "song_mid": mid,
+                    "song_type": 0
+                }
+            }
+        }
+        
         if sid != 0:
-            # 如果有 songid（sid），使用 songid 进行请求
-            req_data = {
-                'songid': sid,
-                'platform': 'yqq',
-                'format': 'json',
-            }
-        else:
-            # 如果没有 songid，使用 songmid 进行请求
-            req_data = {
-                'songmid': mid,
-                'platform': 'yqq',
-                'format': 'json',
-            }
+            payload["songinfo"]["param"]["song_id"] = sid
 
-        # 发送请求并解析返回的 JSON 数据
-        response = requests.post(self.song_url, data=req_data, cookies=self.cookies, headers=self.headers)
+        response = requests.post(self.base_url, json=payload, cookies=self.cookies, headers=self.headers)
         data = response.json()
-        #return data
-        # 确保数据结构存在，避免索引错误
-        if 'data' in data and len(data['data']) > 0:
-            song_info = data['data'][0]
-            album_info = song_info.get('album', {})
-            singers = song_info.get('singer', [])
+        
+        songinfo = data.get("songinfo", {}).get("data", {})
+        track_info = songinfo.get("track_info", {})
+        
+        if track_info and track_info.get("id"):
+            album_info = track_info.get('album', {})
+            singers = track_info.get('singer', [])
             singer_names = ', '.join([singer.get('name', 'Unknown') for singer in singers])
 
-            # 获取专辑封面图片 URL
             album_mid = album_info.get('mid')
             img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{album_mid}.jpg?max_age=2592000' if album_mid else 'https://axidiqolol53.objectstorage.ap-seoul-1.oci.customer-oci.com/n/axidiqolol53/b/lusic/o/resources/cover.jpg'
 
-            # 返回处理后的歌曲信息
             return {
-                'name': song_info.get('name', 'Unknown'),
+                'name': track_info.get('name', 'Unknown'),
                 'album': album_info.get('name', 'Unknown'),
                 'singer': singer_names,
                 'pic': img_url,
-                'mid': song_info.get('mid', mid),
-                'id': song_info.get('id', sid)
+                'mid': track_info.get('mid', mid),
+                'id': track_info.get('id', sid)
             }
         else:
-            return {'msg': '信息获取错误/歌曲不存在'}
+            return {'msg': '信息获取错误/歌曲不存在或Cookie已过期'}
 
     def get_music_lyric(self, mid):
         """
@@ -288,17 +292,87 @@ class QQMusic:
             print(f"Error fetching lyrics: {e}")
             return {'error': '无法获取歌词'}
 
+    def get_music_search(self, keyword, page=1, limit=10):
+        url = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
+        params = {
+            "p": page,
+            "n": limit,
+            "w": keyword,
+            "format": "json"
+        }
+        try:
+            r = requests.get(url, params=params, headers=self.headers)
+            r.raise_for_status()
+            data = r.json()
+            
+            songs = []
+            song_list = data.get("data", {}).get("song", {}).get("list", [])
+            
+            for item in song_list:
+                singer_names = ', '.join([s.get("name", "") for s in item.get("singer", [])])
+                songs.append({
+                    "songmid": item.get("songmid"),
+                    "songname": item.get("songname"),
+                    "singer": singer_names,
+                    "albumname": item.get("albumname"),
+                    "url": f"https://y.qq.com/n/ryqq/songDetail/{item.get('songmid')}"
+                })
+            return songs
+            
+        except Exception as e:
+            print(f"Error fetching search results: {e}")
+            return []
+
+    def get_playlist_search(self, keyword, page=1, limit=10):
+        url = "https://u.y.qq.com/cgi-bin/musicu.fcg"
+        payload = {
+            "req_1": {
+                "method": "DoSearchForQQMusicDesktop",
+                "module": "music.search.SearchCgiService",
+                "param": {
+                    "num_per_page": limit,
+                    "page_num": page,
+                    "query": keyword,
+                    "search_type": 3 
+                }
+            }
+        }
+        try:
+            r = requests.post(url, json=payload, headers=self.headers)
+            r.raise_for_status()
+            data = r.json()
+            
+            playlists = []
+            playlist_list = data.get("req_1", {}).get("data", {}).get("body", {}).get("songlist", {}).get("list", [])
+            
+            for item in playlist_list:
+                playlists.append({
+                    "dissid": item.get("dissid"),
+                    "dissname": item.get("dissname"),
+                    "creator": item.get("creator", {}).get("name"),
+                    "imgurl": item.get("imgurl"),
+                    "song_count": item.get("song_count"),
+                    "listennum": item.get("listennumstr")
+                })
+            return playlists
+            
+        except Exception as e:
+            print(f"Error fetching playlist search results: {e}")
+            return []
+
 @app.route('/song', methods=['GET'])
 def get_song():
     song_url = request.args.get('url')
     if not song_url:
-        return jsonify({"error": "url parameter is required"}), 400
+        return jsonify({"code": 400, "msg": "url parameter is required", "data": None}), 400
 
     qqmusic = QQMusic()
     qqmusic.set_cookies(cookie_str)
 
     # 从传入的 URL 中提取 songmid 或 songid
     songmid = qqmusic.ids(song_url)
+    if not songmid:
+        return jsonify({"code": 400, "msg": "Invalid QQ Music URL", "data": None}), 400
 
     # 文件类型处理
     file_types = ['aac_48','aac_96','aac_192','ogg_96','ogg_192','ogg_320','ogg_640','atmos_51','atmos_2','master','flac','320','128']
@@ -314,6 +388,10 @@ def get_song():
         mid = songmid
     # 获取歌曲信息
     info = qqmusic.get_music_song(mid, sid)
+    
+    if 'msg' in info:
+        return jsonify({"code": 404, "msg": info['msg'], "data": None}), 404
+
     # 对于每种文件类型，获取对应的音乐 URL
     for file_type in file_types:
         result = qqmusic.get_music_url(info['mid'], file_type)
@@ -324,10 +402,60 @@ def get_song():
 
     # 构造 JSON 输出
     output = {
-        'song': info,
-        'lyric': lyric,
-        'music_urls': results,
+        "code": 200,
+        "msg": "success",
+        "data": {
+            'song': info,
+            'lyric': lyric,
+            'music_urls': results,
+        }
     }
+    json_data = json.dumps(output)
+    return Response(json_data, content_type='application/json')
+
+@app.route('/search', methods=['GET'])
+def search_song():
+    keyword = request.args.get('keyword')
+    page = request.args.get('page', 1, type=int)
+    limit = request.args.get('limit', 10, type=int)
+
+    if not keyword:
+        return jsonify({"code": 400, "msg": "keyword parameter is required", "data": None}), 400
+
+    qqmusic = QQMusic()
+    # No cookies needed for search API
+    
+    results = qqmusic.get_music_search(keyword, page, limit)
+    
+    output = {
+        "code": 200,
+        "msg": "success",
+        "data": results
+    }
+    
+    json_data = json.dumps(output)
+    return Response(json_data, content_type='application/json')
+
+@app.route('/search/playlist', methods=['GET'])
+def search_playlist():
+    keyword = request.args.get('keyword')
+    page = request.args.get('page', 1, type=int)
+    limit = request.args.get('limit', 10, type=int)
+
+    if not keyword:
+        return jsonify({"code": 400, "msg": "keyword parameter is required", "data": None}), 400
+
+    qqmusic = QQMusic()
+    # No cookies needed for search API
+    
+    results = qqmusic.get_playlist_search(keyword, page, limit)
+    
+    output = {
+        "code": 200,
+        "msg": "success",
+        "data": results
+    }
+    
     json_data = json.dumps(output)
     return Response(json_data, content_type='application/json')
 

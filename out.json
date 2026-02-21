@@ -1,0 +1,355 @@
+{
+  "code": 0,
+  "ts": 1771691544595,
+  "start_ts": 1771691544469,
+  "traceid": "5d797afdc8429b7d",
+  "req_1": {
+    "code": 0,
+    "data": {
+      "body": {
+        "album": {
+          "list": []
+        },
+        "gedantip": {
+          "tab": 0,
+          "tip": ""
+        },
+        "mv": {
+          "list": []
+        },
+        "qc": [],
+        "singer": {
+          "list": []
+        },
+        "song": {
+          "list": []
+        },
+        "songlist": {
+          "list": [
+            {
+              "copyrightnum": 0,
+              "createtime": "2019-06-28",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "2904004371",
+                "encrypt_uin": "owEz7enz7eolov**",
+                "followflag": 0,
+                "isVip": 0,
+                "name": "今晚月色很美",
+                "qq": 2904004371,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 300,
+              "dissid": "7039749142",
+              "dissname": "百听不厌的周杰伦",
+              "docid": "7039749142",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/0cthhV0GM91gWJWQ95ibGRGtXgKTNzsA9WnIZvH915S1UKmUibiattibew/300?n=1",
+              "introduction": "周杰伦，英文名字JayChou，七九年出生的他早在念淡江中学音乐科时上“超级新人王”，就被主持人吴宗宪相中而签约。十八岁那年就交出不少亮眼的作品，包括吴宗宪的《屋顶》、王力宏的《打开爱》等。 周杰伦一出场给人一种爱耍酷的感觉，不喜与媒体亲近。然而作曲、填词、编曲、主唱，样样俱精的他，首张唱碟便给人一种横空出世的感觉，绝对惊喜。随后即得到“音乐新人王”称号，而且周杰伦具有自成一格的R&B演绎方法，桀骜不驯、酷酷的演唱风格，虽然被很多人认为“吐字不清”，但丝毫不影响他的身价一路狂飙，直升到天王级。",
+              "listennum": 387782023,
+              "listennumstr": "3.9亿",
+              "modifytime": "2019-08-16",
+              "song_count": 99
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2016-03-14",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "1281244335",
+                "encrypt_uin": "oK-FoK-P7eoi7v**",
+                "followflag": 0,
+                "isVip": 1,
+                "name": "1946 。",
+                "qq": 1281244335,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 200,
+              "dissid": "2308475533",
+              "dissname": "我落泪情绪零碎，周杰伦",
+              "docid": "2308475533",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/xy585mIRLoGjBb9SibEqA5ng8ENKCAWEheDKGyPor1PV2NSIPNTicDwQ/300?n=1",
+              "introduction": "Jay，一个喜欢了三年的歌手，第一次听完一个歌手的所有歌曲。还记得第一次听你的歌，听完都不知道唱的什么，太快了。后来经历了一些事情慢慢的就喜欢上这种旋律，现在听你的歌已经是一个习惯了。有的人因为你英俊帅气的外表喜欢你，有的人因为失恋迷恋上你，有的人因为你的才华欣赏你，我刚好是个例外，什么都不是。我朋友都知道我喜欢周杰伦，却不知道我喜欢的原因，如果有一天我跟谁说了，那么你一定是我心目中最重要的人。",
+              "listennum": 51982137,
+              "listennumstr": "5198.2万",
+              "modifytime": "2020-11-24",
+              "song_count": 34
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2021-06-18",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "2071224494",
+                "encrypt_uin": "ownloK-A7evq7n**",
+                "followflag": 0,
+                "isVip": 1,
+                "name": "1",
+                "qq": 2071224494,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 400,
+              "dissid": "8035980030",
+              "dissname": "周杰伦",
+              "docid": "8035980030",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/luCuDWoqBJWFyhaV3LyUJya23DiaRfibGF31PWzic1G239GS5FSf1Rdiag/300?n=1",
+              "introduction": "",
+              "listennum": 20392031,
+              "listennumstr": "2039.2万",
+              "modifytime": "2025-12-17",
+              "song_count": 56
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2018-04-01",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "3239619075",
+                "encrypt_uin": "oi-iNKC5NKnl7v**",
+                "followflag": 0,
+                "isVip": 1,
+                "name": "歌单狂魔",
+                "qq": 3239619075,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 400,
+              "dissid": "3805603854",
+              "dissname": "周杰伦歌曲大全！一张歌单全听完",
+              "docid": "3805603854",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/gaSSCRswoq7NlpHA8vK1PlQBJ2PTPia46icDP0S5LXEvDwJF2lgPh6fQ/300?n=1",
+              "introduction": "“周杰伦”三个字是不变的信仰！\n歌单收集杰伦最全歌曲合集，所有关于杰伦的都值得我们聆听~",
+              "listennum": 892888470,
+              "listennumstr": "8.9亿",
+              "modifytime": "2026-01-19",
+              "song_count": 211
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2022-06-24",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "1181194114",
+                "encrypt_uin": "oK6FoK6q7e657n**",
+                "followflag": 0,
+                "isVip": 1,
+                "name": "一直在路上",
+                "qq": 1181194114,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 400,
+              "dissid": "8523075134",
+              "dissname": "百听不厌的周杰伦",
+              "docid": "8523075134",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/HiaFYUGPwiasibw4gxunoicHFOiaoJwMiaiahRTHXDy91P3oFibDQOmKDbbZSg/300?n=1",
+              "introduction": "22年过去了，“周杰伦”三个字依然是不变的信仰！",
+              "listennum": 100322635,
+              "listennumstr": "1.0亿",
+              "modifytime": "2022-12-19",
+              "song_count": 203
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2016-09-10",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "1304915708",
+                "encrypt_uin": "oKoz7eE57KSzNn**",
+                "followflag": 0,
+                "isVip": 0,
+                "name": "王睿",
+                "qq": 1304915708,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 100,
+              "dissid": "3230056671",
+              "dissname": "周杰伦作品正序集",
+              "docid": "3230056671",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/tCsp7uFIoHxnyp2CG8sicxFnL0ckxMorpIQN9BB13BDXxoF8yBReIcQ/300?n=1",
+              "introduction": "周杰伦所有录音室歌曲正序集，按时间正序排列~\n\n所有JAY演唱的收录在自己专辑、收录在别人专辑和根本就没有收录在专辑里的歌曲~",
+              "listennum": 194353586,
+              "listennumstr": "1.9亿",
+              "modifytime": "2025-12-05",
+              "song_count": 202
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2014-12-03",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "414104253",
+                "encrypt_uin": "7e6PoKnPow4i",
+                "followflag": 0,
+                "isVip": 0,
+                "name": "悠悠",
+                "qq": 414104253,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 11,
+              "dissid": "1632421737",
+              "dissname": "周杰伦的悲伤情歌",
+              "docid": "1632421737",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_playls/414104253/414104253-3.jpg/0?p=1433238518&n=1",
+              "introduction": "陪伴我们走过青春的你终于也有了自己的幸福。\n当年你写的情歌，到底想给谁听？",
+              "listennum": 5924601,
+              "listennumstr": "592.5万",
+              "modifytime": "2021-10-29",
+              "song_count": 28
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2017-02-24",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "1227519849",
+                "encrypt_uin": "oK-A7i45NKcPNv**",
+                "followflag": 0,
+                "isVip": 0,
+                "name": "♪",
+                "qq": 1227519849,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 300,
+              "dissid": "3553797029",
+              "dissname": "周杰伦经典",
+              "docid": "3553797029",
+              "hotnessstr": "",
+              "imgurl": "http://y.gtimg.cn/music/photo_new/T002R300x300M000003DFRzD192KKD.jpg?n=1",
+              "introduction": "",
+              "listennum": 56447768,
+              "listennumstr": "5644.8万",
+              "modifytime": "2025-11-11",
+              "song_count": 48
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2014-08-11",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "1434498879",
+                "encrypt_uin": "oKvi7evqNeclNv**",
+                "followflag": 0,
+                "isVip": 1,
+                "name": "哈哈哈",
+                "qq": 1434498879,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 300,
+              "dissid": "3408226447",
+              "dissname": "周杰伦经典曲目合辑",
+              "docid": "3408226447",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/af0t8HAwFzWicLiaJvo3PgxwF2LhGRnVfeZQuribtID22Kewl9ou0BuKg/300?n=1",
+              "introduction": "精选杰迷必听杰伦的一些经典曲目",
+              "listennum": 7077031,
+              "listennumstr": "707.7万",
+              "modifytime": "2020-11-04",
+              "song_count": 60
+            },
+            {
+              "copyrightnum": 0,
+              "createtime": "2017-07-05",
+              "creator": {
+                "avatarUrl": "",
+                "creator_uin": "2955143385",
+                "encrypt_uin": "owEk7K6PoioF7v**",
+                "followflag": 0,
+                "isVip": 0,
+                "name": "晴天love",
+                "qq": 2955143385,
+                "singerid": 0,
+                "singermid": "",
+                "type": 0
+              },
+              "diss_status": 400,
+              "dissid": "2372403036",
+              "dissname": "「周杰伦」演唱会live最全合集",
+              "docid": "2372403036",
+              "hotnessstr": "",
+              "imgurl": "http://qpic.y.qq.com/music_cover/QviaUUA4YqIMo3N6TseIlbhQribBcCL4a5NNRxcy9ibSz1icUibUwhowuKQ/300?n=1",
+              "introduction": "再次寻找我们的周杰伦，谁的青春不杰伦？如果有一天，我带你去听周杰伦的演唱会，那么你对我来说，一定很重要，因为我带你听的是我的整个青春。",
+              "listennum": 25033655,
+              "listennumstr": "2503.4万",
+              "modifytime": "2020-12-23",
+              "song_count": 117
+            }
+          ]
+        },
+        "user": {
+          "list": []
+        },
+        "zhida": {
+          "list": []
+        }
+      },
+      "code": 0,
+      "feedbackURL": "",
+      "meta": {
+        "cid": "",
+        "curpage": 1,
+        "dir": "L",
+        "display_order": [],
+        "ein": 19,
+        "estimate_sum": 299,
+        "expid": "",
+        "feedbackPlaceId": "",
+        "is_filter": 0,
+        "next_page_start": {},
+        "nextpage": 2,
+        "perpage": 10,
+        "query": "周杰伦",
+        "report_info": {
+          "items": {}
+        },
+        "result_trustworthy": 1,
+        "ret": 0,
+        "safetyType": 0,
+        "safetyUrl": "",
+        "searchid": "",
+        "sid": "",
+        "sin": 0,
+        "step_rela_syntax_tree": {},
+        "sum": 299,
+        "tab_list": [
+          100,
+          0,
+          3,
+          4,
+          2,
+          1,
+          15,
+          10,
+          101,
+          7,
+          8
+        ],
+        "uid": "",
+        "v": 0
+      },
+      "ver": 0
+    }
+  }
+}

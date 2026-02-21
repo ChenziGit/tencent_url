@@ -1,0 +1,28 @@
+Testing integration...
+
+--- Testing with NO cookies ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added qqmusic_key ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added qm_keyst ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added psrf_access_token_expiresAt ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added psrf_qqunionid ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added euin ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added wxunionid ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added uin ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
+
+--- Testing with added psrf_qqopenid ---
+FAILED:  信息获取错误/歌曲不存在或Cookie已过期
