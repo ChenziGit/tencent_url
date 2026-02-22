@@ -260,13 +260,33 @@ async function getTopLists() {
     getApiConfig(); // 验证密码
 
     try {
-        const list = await axios({
-            url: "https://u.y.qq.com/cgi-bin/musicu.fcg?_=1577086820633&data=%7B%22comm%22%3A%7B%22g_tk%22%3A5381%2C%22uin%3A123456%2C%22format%22%3A%22json%22%2C%22inCharset%22%3A%22utf-8%22%2C%22outCharset%22%3A%22utf-8%22%2C%22notice%22%3A0%2C%22platform%22%3A%22h5%22%2C%22needNewCode%22%3A1%2C%22ct%22%3A23%2C%22cv%22%3A0%7D%2C%22topList%22%3A%7B%22module%22%3A%22musicToplist.ToplistInfoServer%22%2C%22method%22%3A%22GetAll%22%2C%22param%22%3A%7B%7D%7D%7D",
-            method: "get",
+        const payload = {
+            "comm": {
+                "g_tk": 5381,
+                "uin": 0,
+                "format": "json",
+                "inCharset": "utf-8",
+                "outCharset": "utf-8",
+                "notice": 0,
+                "platform": "h5",
+                "needNewCode": 1,
+                "ct": 23,
+                "cv": 0
+            },
+            "topList": {
+                "module": "musicToplist.ToplistInfoServer",
+                "method": "GetAll",
+                "param": {}
+            }
+        };
+
+        const list = await axios.post("https://u.y.qq.com/cgi-bin/musicu.fcg", payload, {
             headers: {
+                "User-Agent": "Mozilla/5.0",
                 Cookie: "uin=",
             }
         });
+
         return list.data.topList.data.group.map((e) => ({
             title: e.groupName,
             data: e.toplist.map((_) => ({
@@ -289,10 +309,26 @@ async function getTopLists() {
 async function getTopListDetail(topListItem) {
     try {
         const period = topListItem.period || "";
-        const res = await axios({
-            url: `https://u.y.qq.com/cgi-bin/musicu.fcg?g_tk=5381&data=%7B%22detail%22%3A%7B%22module%22%3A%22musicToplist.ToplistInfoServer%22%2C%22method%22%3A%22GetDetail%22%2C%22param%22%3A%7B%22topId%22%3A${topListItem.id}%2C%22offset%22%3A0%2C%22num%22%3A100%2C%22period%22%3A%22${period}%22%7D%7D%2C%22comm%22%3A%7B%22ct%22%3A24%2C%22cv%22%3A0%7D%7D`,
-            method: "get",
+        const payload = {
+            "comm": {
+                "ct": 24,
+                "cv": 0
+            },
+            "detail": {
+                "module": "musicToplist.ToplistInfoServer",
+                "method": "GetDetail",
+                "param": {
+                    "topId": parseInt(topListItem.id),
+                    "offset": 0,
+                    "num": 100,
+                    "period": period
+                }
+            }
+        };
+
+        const res = await axios.post("https://u.y.qq.com/cgi-bin/musicu.fcg", payload, {
             headers: {
+                "User-Agent": "Mozilla/5.0",
                 Cookie: "uin=",
             }
         });
