@@ -292,7 +292,7 @@ class QQMusic:
             print(f"Error fetching lyrics: {e}")
             return {'error': '无法获取歌词'}
 
-    def get_music_search(self, keyword, page=1, limit=10):
+    def get_music_search(self, keyword, page=1, limit=20):
         url = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
         params = {
             "p": page,
@@ -323,7 +323,7 @@ class QQMusic:
             print(f"Error fetching search results: {e}")
             return []
 
-    def get_playlist_search(self, keyword, page=1, limit=10):
+    def get_playlist_search(self, keyword, page=1, limit=20):
         url = "https://u.y.qq.com/cgi-bin/musicu.fcg"
         payload = {
             "req_1": {
@@ -417,7 +417,7 @@ def get_song():
 def search_song():
     keyword = request.args.get('keyword')
     page = request.args.get('page', 1, type=int)
-    limit = request.args.get('limit', 10, type=int)
+    limit = request.args.get('limit', 20, type=int)
 
     if not keyword:
         return jsonify({"code": 400, "msg": "keyword parameter is required", "data": None}), 400
@@ -440,7 +440,7 @@ def search_song():
 def search_playlist():
     keyword = request.args.get('keyword')
     page = request.args.get('page', 1, type=int)
-    limit = request.args.get('limit', 10, type=int)
+    limit = request.args.get('limit', 20, type=int)
 
     if not keyword:
         return jsonify({"code": 400, "msg": "keyword parameter is required", "data": None}), 400
