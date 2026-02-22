@@ -360,6 +360,55 @@ class QQMusic:
             print(f"Error fetching playlist search results: {e}")
             return []
 
+    def get_playlist_detail(self, disstid):
+        url = "https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg"
+        params = {
+            "type": 1,
+            "json": 1,
+            "utf8": 1,
+            "onlysong": 0,
+            "disstid": disstid,
+            "format": "json",
+        }
+        try:
+            r = requests.get(url, params=params, headers=self.headers)
+            r.raise_for_status()
+            data = r.json()
+            
+            if data.get("code") == 0 and "cdlist" in data and len(data["cdlist"]) > 0:
+                cdinfo = data["cdlist"][0]
+                playlist_info = {
+                    "dissid": cdinfo.get("disstid"),
+                    "dissname": cdinfo.get("dissname"),
+                    "creator": cdinfo.get("nickname"),
+                    "imgurl": cdinfo.get("logo"),
+                    "desc": cdinfo.get("desc"),
+                    "song_count": cdinfo.get("total_song_num"),
+                    "listennum": cdinfo.get("visitnum")
+                }
+                
+                songs = []
+                for item in cdinfo.get("songlist", []):
+                    singer_names = ', '.join([s.get("name", "") for s in item.get("singer", [])])
+                    album_mid = item.get("albummid")
+                    img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{album_mid}.jpg?max_age=2592000' if album_mid else ''
+                    
+                    songs.append({
+                        "songmid": item.get("songmid"),
+                        "songname": item.get("songname"),
+                        "singer": singer_names,
+                        "albumname": item.get("albumname"),
+                        "pic": img_url,
+                        "url": f"https://y.qq.com/n/ryqq/songDetail/{item.get('songmid')}"
+                    })
+                    
+                return {"playlist": playlist_info, "songs": songs}
+            
+            return None
+        except Exception as e:
+            print(f"Error fetching playlist details: {e}")
+            return None
+
 @app.route('/song', methods=['GET'])
 def get_song():
     song_url = request.args.get('url')
@@ -450,6 +499,28 @@ def search_playlist():
     
     results = qqmusic.get_playlist_search(keyword, page, limit)
     
+    output = {
+        "code": 200,
+        "msg": "success",
+        "data": results
+    }
+    
+    json_data = json.dumps(output)
+    return Response(json_data, content_type='application/json')
+
+@app.route('/playlist', methods=['GET'])
+def get_playlist():
+    id = request.args.get('id')
+    if not id:
+        return jsonify({"code": 400, "msg": "id parameter is required", "data": None}), 400
+
+    qqmusic = QQMusic()
+    # No cookies needed for public playlist details
+    
+    results = qqmusic.get_playlist_detail(id)
+    if not results:
+        return jsonify({"code": 404, "msg": "Playlist not found or error", "data": None}), 404
+        
     output = {
         "code": 200,
         "msg": "success",

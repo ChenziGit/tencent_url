@@ -42,7 +42,7 @@ function getApiConfig() {
     }
 
     // 强校验密码是否正确 (你可以在这里修改你实际想要的密码字符串)
-    const CORRECT_PASSWORD = "123";
+    const CORRECT_PASSWORD = "xiaochen";
 
     if (password !== CORRECT_PASSWORD) {
         throw new Error("密码错误！请在插件设置中输入正确的访问密码。");
@@ -218,6 +218,45 @@ async function getLyric(musicItem) {
     }
 }
 
+/**
+ * 获取歌单详情
+ */
+async function getMusicSheetInfo(sheetItem, page) {
+    const { apiHost } = getApiConfig();
+
+    try {
+        const requestUrl = `${apiHost}/playlist`;
+        const response = await axios.get(requestUrl, {
+            params: { id: sheetItem.id },
+            ...axiosConfig
+        });
+
+        const result = response.data;
+        if (result && result.code === 200 && result.data) {
+            const playlistInfo = result.data.playlist || {};
+            const songs = result.data.songs || [];
+
+            return {
+                isEnd: true,
+                sheetItem: {
+                    id: String(playlistInfo.dissid || sheetItem.id),
+                    title: playlistInfo.dissname || sheetItem.title || "未知歌单",
+                    artist: playlistInfo.creator || "未知",
+                    artwork: playlistInfo.imgurl || sheetItem.artwork || "",
+                    description: playlistInfo.desc || "",
+                    worksNum: playlistInfo.song_count || songs.length,
+                    playCount: playlistInfo.listennum ? String(playlistInfo.listennum).replace(/[^0-9.]/g, '') * 10000 : 0
+                },
+                musicList: songs.map(formatMusicItem)
+            };
+        }
+        return { isEnd: true, musicList: [] };
+    } catch (error) {
+        console.error(`[小Q音乐] 获取歌单详情失败: ${error.message}`);
+        return { isEnd: true, musicList: [] };
+    }
+}
+
 module.exports = {
     platform: "小Q音乐",
     author: "小橙QQ群1077835447",
@@ -251,5 +290,7 @@ module.exports = {
     ],
     search: search,
     getMediaSource: getMediaSource,
-    getLyric: getLyric
+    getLyric: getLyric,
+    getPlaylistDetail: getMusicSheetInfo,
+    getMusicSheetInfo: getMusicSheetInfo
 };
