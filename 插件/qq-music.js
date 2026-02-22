@@ -24,7 +24,7 @@ const axiosConfig = {
  * 验证密码并获取 API 基础地址
  * 从 userVariables 中读取配置
  */
-function getApiConfig() {
+async function getApiConfig() {
     let apiHost = "http://121.196.228.123:5122"; // 默认后台地址
     let password = "";
 
@@ -37,10 +37,20 @@ function getApiConfig() {
         } catch (e) { }
     }
 
-    // 强校验密码是否正确 (你可以在这里修改你实际想要的密码字符串)
-    const CORRECT_PASSWORD = "xiaochen";
+    // 从 PHP 接口获取正确的密码
+    const passwordApiUrl = "http://121.196.228.123/密码api/api.php";
+    let correctPassword = "xiaochen"; // 备用降级密码
 
-    if (password !== CORRECT_PASSWORD) {
+    try {
+        const response = await axios.get(passwordApiUrl, { ...axiosConfig, timeout: 5000 });
+        if (response.data && response.data.code === 200 && response.data.data) {
+            correctPassword = response.data.data.password || correctPassword;
+        }
+    } catch (e) {
+        console.error(`[小Q音乐] 密码接口请求失败，使用本地默认密码: ${e.message}`);
+    }
+
+    if (password !== correctPassword) {
         throw new Error("密码错误！请在插件设置中输入正确的访问密码。");
     }
 
@@ -80,7 +90,7 @@ function formatPlaylistItem(playlist) {
  */
 async function search(query, page, type) {
     // 权限与配置校验
-    const { apiHost } = getApiConfig();
+    const { apiHost } = await getApiConfig();
 
     try {
         if (type === "music") {
@@ -134,7 +144,7 @@ async function search(query, page, type) {
  * 获取媒体源（播放链接/音质详情）
  */
 async function getMediaSource(musicItem, quality) {
-    const { apiHost } = getApiConfig();
+    const { apiHost } = await getApiConfig();
 
     try {
         // 请求后台的 /song 接口，注意我们的后台接收的参数通常是 QQ 音乐链接 url
@@ -187,7 +197,7 @@ async function getMediaSource(musicItem, quality) {
  * 获取歌词
  */
 async function getLyric(musicItem) {
-    const { apiHost } = getApiConfig();
+    const { apiHost } = await getApiConfig();
 
     try {
         const mockUrl = `https://y.qq.com/n/ryqq/songDetail/${musicItem.id}`;
@@ -218,7 +228,7 @@ async function getLyric(musicItem) {
  * 获取歌单详情
  */
 async function getMusicSheetInfo(sheetItem, page) {
-    const { apiHost } = getApiConfig();
+    const { apiHost } = await getApiConfig();
 
     try {
         const requestUrl = `${apiHost}/playlist`;
@@ -257,7 +267,7 @@ async function getMusicSheetInfo(sheetItem, page) {
  * 获取榜单分类
  */
 async function getTopLists() {
-    getApiConfig(); // 验证密码
+    await getApiConfig(); // 验证密码
 
     try {
         const payload = {
@@ -307,6 +317,7 @@ async function getTopLists() {
  * 获取榜单详情
  */
 async function getTopListDetail(topListItem) {
+    await getApiConfig();
     try {
         const period = topListItem.period || "";
         const payload = {
@@ -351,7 +362,7 @@ async function getTopListDetail(topListItem) {
  * 获取推荐歌单标签
  */
 async function getRecommendSheetTags() {
-    getApiConfig(); // 验证密码
+    await getApiConfig(); // 验证密码
     try {
         const res = (
             await axios.get(
@@ -390,6 +401,7 @@ async function getRecommendSheetTags() {
  * 根据标签获取推荐歌单
  */
 async function getRecommendSheetsByTag(tag, page) {
+    await getApiConfig(); // 验证密码
     try {
         const pageSize = 20;
         const rawRes = (
