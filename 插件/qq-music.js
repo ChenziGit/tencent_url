@@ -251,6 +251,121 @@ async function getMusicSheetInfo(sheetItem, page) {
     }
 }
 
+/**
+ * 获取推荐歌单
+ */
+async function getRecommendPlaylists(page) {
+    const { apiHost } = getApiConfig();
+
+    // 内置一些 QQ 音乐热门歌单的 dissid 作为推荐
+    const recommendIds = [
+        "7039749142", // 百听不厌的周杰伦
+        "8558778401", // 2024抖音爆款热歌
+        "9064719532", // 华语精选
+        "8470129712", // 流行前线
+        "8385078519", // KTV必点
+        "8235288591", // 伤感流行
+        "9153942295", // 纯音乐推荐
+        "8492080388"  // 网络热歌
+    ];
+
+    if (page > 1) {
+        return { isEnd: true, data: [] };
+    }
+
+    try {
+        const playlists = [];
+        // 为了避免并发太多，我们一次性获取前几个或者串行获取
+        for (const id of recommendIds) {
+            const requestUrl = `${apiHost}/playlist`;
+            const response = await axios.get(requestUrl, {
+                params: { id: id },
+                ...axiosConfig
+            });
+            const result = response.data;
+            if (result && result.code === 200 && result.data && result.data.playlist) {
+                const p = result.data.playlist;
+                playlists.push({
+                    id: String(p.dissid || id),
+                    title: p.dissname || "未知歌单",
+                    artist: p.creator || "未知",
+                    artwork: p.imgurl || "",
+                    playCount: p.listennum ? String(p.listennum).replace(/[^0-9.]/g, '') * 10000 : 0
+                });
+            }
+        }
+
+        return {
+            isEnd: true,
+            data: playlists
+        };
+    } catch (error) {
+        console.error(`[小Q音乐] 获取推荐歌单失败: ${error.message}`);
+        return { isEnd: true, data: [] };
+    }
+}
+
+/**
+ * 获取榜单分类
+ */
+async function getTopLists() {
+    getApiConfig(); // 验证密码
+
+    // QQ音乐官方榜单（提取一些热门的榜单作为固定歌单返回）
+    // 榜单本质上也可以看作特定的歌单ID，这里我们找几个有代表性的QQ音乐榜单对应的内部歌单ID，或者直接用固定的流行歌单代替榜单
+    const official = [
+        { id: "8352611746", name: "QQ音乐热歌榜", description: "QQ音乐官方热歌排行榜", coverImgUrl: "https://y.qq.com/music/photo_new/T002R300x300M000001J5QJL1pRQYB_1.jpg" },
+        { id: "8886915065", name: "QQ音乐新歌榜", description: "QQ音乐官方新歌排行榜", coverImgUrl: "https://y.qq.com/music/photo_new/T002R300x300M000002FkS1M0p5g0M_1.jpg" },
+        { id: "8528532450", name: "QQ音乐流行指数榜", description: "QQ音乐官方流行指数排行榜", coverImgUrl: "https://y.qq.com/music/photo_new/T002R300x300M000001fXNE00g0L0h_1.jpg" },
+        { id: "8134769931", name: "QQ音乐网络歌曲榜", description: "QQ音乐官方网络歌曲排行榜", coverImgUrl: "https://y.qq.com/music/photo_new/T002R300x300M000004cKX0M0tK1h_1.jpg" }
+    ];
+
+    const officialFormatted = official.map(toplist => ({
+        type: "3", // type为3表示榜单
+        id: String(toplist.id),
+        title: toplist.name,
+        coverImg: toplist.coverImgUrl,
+        artist: "QQ音乐官方",
+        description: toplist.description,
+        worksNum: 100
+    }));
+
+    return [
+        {
+            title: "QQ音乐排行榜",
+            data: officialFormatted
+        }
+    ];
+}
+
+/**
+ * 获取榜单详情 (复用歌单详情)
+ */
+async function getTopListDetail(topListItem) {
+    try {
+        console.log(`[小Q音乐] 获取榜单详情: ${topListItem.title}`);
+        const res = await getMusicSheetInfo(topListItem, 1);
+
+        return {
+            topListItem: {
+                id: res.sheetItem.id,
+                title: res.sheetItem.title,
+                name: res.sheetItem.title,
+                coverImg: res.sheetItem.artwork,
+                type: "3",
+                artist: res.sheetItem.artist,
+                description: res.sheetItem.description
+            },
+            musicList: res.musicList || [],
+            tracks: res.musicList || [],
+            isEnd: true
+        };
+    } catch (error) {
+        console.error("[小Q音乐] 获取榜单详情失败:", error.message);
+        throw error;
+    }
+}
+
 module.exports = {
     platform: "小Q音乐",
     author: "小橙QQ群1077835447",
@@ -281,5 +396,8 @@ module.exports = {
     getMediaSource: getMediaSource,
     getLyric: getLyric,
     getPlaylistDetail: getMusicSheetInfo,
-    getMusicSheetInfo: getMusicSheetInfo
+    getMusicSheetInfo: getMusicSheetInfo,
+    getRecommendPlaylists: getRecommendPlaylists,
+    getTopLists: getTopLists,
+    getTopListDetail: getTopListDetail
 };
