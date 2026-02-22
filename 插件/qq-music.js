@@ -23,22 +23,16 @@ const axiosConfig = {
  * 从 userVariables 中读取配置
  */
 function getApiConfig() {
-    let apiHost = "http://127.0.0.1:5122"; // 默认后台地址
+    let apiHost = "http://121.196.228.123:5122"; // 默认后台地址
     let password = "";
 
     if (typeof env !== "undefined") {
         try {
             const userVars = env.getUserVariables();
             if (userVars) {
-                apiHost = userVars.api_host || apiHost;
                 password = userVars.plugin_password || "";
             }
         } catch (e) { }
-    }
-
-    // 格式化 API 地址，确保不以 / 结尾
-    if (apiHost.endsWith('/')) {
-        apiHost = apiHost.slice(0, -1);
     }
 
     // 强校验密码是否正确 (你可以在这里修改你实际想要的密码字符串)
@@ -265,17 +259,12 @@ module.exports = {
     // 强制使用配置以校验密码
     userVariables: [
         {
-            key: "api_host",
-            name: "自建 API 接口地址",
-            hint: "例如：http://127.0.0.1:5122，不要以 / 结尾"
-        },
-        {
             key: "plugin_password",
             name: "插件访问密码 (必填)",
             hint: "输入正确密码后方可使用插件所有功能"
         }
     ],
-    description: "## 小Q音乐 v1.0.0\n\n🎉 **功能说明**\n- ✅ 支持歌曲、歌单搜索\n- ✅ 支持获取无损音频与普通音频\n- ✅ 支持同步显示双语歌词\n- 🔒 **首次导入请前往设置中配置您的后端 API 地址和访问密码。**",
+    description: "## 小Q音乐 v1.0.0\n\n🎉 **功能说明**\n- ✅ 支持歌曲、歌单搜索\n- ✅ 支持获取无损音频与普通音频\n- ✅ 支持同步显示双语歌词\n- 🔒 **首次导入请前往设置中配置访问密码。**",
     hints: {
         importMusicItem: [
             "QQ音乐：APP点击分享，然后复制链接"
