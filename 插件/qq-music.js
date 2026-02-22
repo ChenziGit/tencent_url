@@ -72,6 +72,7 @@ function formatMusicItem(song) {
         artist: song.singer || "未知歌手",
         album: song.albumname || song.album || "未知专辑",
         artwork: song.pic || "", // 封面如果有的话
+        duration: song.duration || song.interval || 0,
         url: song.url
     };
 }

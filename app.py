@@ -315,6 +315,7 @@ class QQMusic:
                     "songname": item.get("songname"),
                     "singer": singer_names,
                     "albumname": item.get("albumname"),
+                    "duration": item.get("interval"),
                     "url": f"https://y.qq.com/n/ryqq/songDetail/{item.get('songmid')}"
                 })
             return songs
@@ -399,6 +400,7 @@ class QQMusic:
                         "singer": singer_names,
                         "albumname": item.get("albumname"),
                         "pic": img_url,
+                        "duration": item.get("interval"),
                         "url": f"https://y.qq.com/n/ryqq/songDetail/{item.get('songmid')}"
                     })
                     
