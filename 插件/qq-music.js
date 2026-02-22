@@ -38,16 +38,21 @@ async function getApiConfig() {
     }
 
     // 从 PHP 接口获取正确的密码
-    const passwordApiUrl = "http://121.196.228.123/密码api/api.php";
-    let correctPassword = "xiaochen"; // 备用降级密码
+    const passwordApiUrl = "http://121.196.228.123:5123/api.php";
+    let correctPassword = null;
 
     try {
         const response = await axios.get(passwordApiUrl, { ...axiosConfig, timeout: 5000 });
         if (response.data && response.data.code === 200 && response.data.data) {
-            correctPassword = response.data.data.password || correctPassword;
+            correctPassword = response.data.data.password;
         }
     } catch (e) {
-        console.error(`[小Q音乐] 密码接口请求失败，使用本地默认密码: ${e.message}`);
+        console.error(`[小Q音乐] 密码接口请求失败: ${e.message}`);
+        throw new Error("无法连接到密码验证服务器，请稍后再试。");
+    }
+
+    if (!correctPassword) {
+        throw new Error("密码验证服务器返回异常，无法获取验证数据。");
     }
 
     if (password !== correctPassword) {
